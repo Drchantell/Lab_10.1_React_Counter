@@ -1,34 +1,22 @@
 Lab_10.1_React_Counter
 
-This is my Lab 10.1 React Counter project built with React and TypeScript to practice managing state with `useState` and handling side effects with `useEffect`.
+This is my Lab 10.1 React Counter project. I built it with React and TypeScript to practice using useState and useEffect.
 
 How the Code Works
 
-1. State Management (`useState`)
-- `count`: Tracks the current counter value (starts at `0`).
-- `step`: Tracks the step amount for increments and decrements (starts at `1`).
-- `history`: Keeps an array of all previous count values (starts as `[0]`).
+The app uses useState to keep track of the count, the step value, and the count history. The count starts at 0, the step starts at 1, and the history starts with 0.
 
-2. Updating State (`changeCount`)
-A helper function `changeCount` updates both `count` and appends the new value to `history` using the spread operator (`[...prev, nextCount]`).
+The changeCount function changes the counter and adds the new number to the history.
 
-3. Auto-Saving with `useEffect`
-Automatically saves the current count to `localStorage` when `count` changes. Uses a 500ms `setTimeout` and a cleanup function (`clearTimeout`) to debounce rapid saves and avoid race conditions.
+I used useEffect to save the current count in localStorage when the count changes. I also used a timer so the app does not save too many times at once.
 
-4. Loading Saved State on Mount
-An `useEffect` hook with an empty dependency array (`[]`) runs once on page load to restore the count and history from `localStorage`.
+Another useEffect runs when the page first loads. It checks localStorage and restores the saved count and history.
 
-5. Keyboard Controls & Cleanup
-An `useEffect` hook attaches a `keydown` listener to `document` for `ArrowUp` and `ArrowDown` controls, with a cleanup function (`document.removeEventListener`) to prevent memory leaks and duplicate listeners.
+I also used useEffect to make the up and down arrow keys work. The up arrow increases the count and the down arrow decreases the count. The cleanup function removes the keyboard listener when it is no longer needed.
 
 How to Run the Project
 
-1. Open the project folder in VS Code terminal.
-2. Run `npm install` to install dependencies.
-3. Run `npm run dev` to start the local development server.
-4. Open the local URL shown in the terminal.
-
-
+Open the project folder in VS Code. Open the terminal and run npm install. After that, run npm run dev. Then open the local link shown in the terminal.
 
 Author: Dr. Chantell McDowell
 Per Scholas Student

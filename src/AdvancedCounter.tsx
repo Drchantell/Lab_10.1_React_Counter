@@ -8,61 +8,50 @@ function AdvancedCounter() {
   const changeCount = (amount: number) => {
     const nextCount = count + amount
     setCount(nextCount)
-    setHistory((previousHistory) => [...previousHistory, nextCount])
+    setHistory((prev) => [...prev, nextCount])
   }
 
-  const increment = () => {
-    changeCount(step)
-  }
+  const increment = () => changeCount(step)
+  const decrement = () => changeCount(-step)
 
-  const decrement = () => {
-    changeCount(-step)
-  }
-
-  const resetCounter = () => {
+  const reset = () => {
     setCount(0)
     setHistory([0])
   }
 
   useEffect(() => {
-    localStorage.setItem('studentCounterCount', String(count))
+    const timer = setTimeout(() => {
+      localStorage.setItem('counterCount', String(count))
+    }, 500)
+
+    return () => clearTimeout(timer)
   }, [count])
 
   useEffect(() => {
-    const savedCount = localStorage.getItem('studentCounterCount')
-
-    if (savedCount !== null) {
-      const parsedCount = Number(savedCount)
-
-      if (!Number.isNaN(parsedCount)) {
-        setCount(parsedCount)
-        setHistory([parsedCount])
+    const saved = localStorage.getItem('counterCount')
+    if (saved !== null) {
+      const parsed = Number(saved)
+      if (!Number.isNaN(parsed)) {
+        setCount(parsed)
+        setHistory([parsed])
       }
     }
   }, [])
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowUp') {
-        changeCount(step)
-      }
-
-      if (event.key === 'ArrowDown') {
-        changeCount(-step)
-      }
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowUp') increment()
+      if (e.key === 'ArrowDown') decrement()
     }
 
     document.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-    }
+    return () => document.removeEventListener('keydown', handleKeyDown)
   }, [count, step])
 
   return (
     <section className="counter-card">
-      <div className="sparkle">✦ React Lab 1 ✦</div>
-      <h1>Student Counter</h1>
+      <div className="sparkle">✦ React Counter ✦</div>
+      <h1>Advanced Counter</h1>
       <p className="subtitle">Practice useState and useEffect</p>
 
       <div className="count-box">
@@ -77,7 +66,7 @@ function AdvancedCounter() {
         <button className="primary-button" onClick={increment}>
           + Increment
         </button>
-        <button className="reset-button" onClick={resetCounter}>
+        <button className="reset-button" onClick={reset}>
           Reset
         </button>
       </div>
@@ -89,10 +78,7 @@ function AdvancedCounter() {
           type="number"
           min="1"
           value={step}
-          onChange={(event) => {
-            const newStep = Number(event.target.value)
-            setStep(newStep >= 1 ? newStep : 1)
-          }}
+          onChange={(e) => setStep(Math.max(1, Number(e.target.value)))}
         />
         <p>Buttons and arrow keys change the count by {step}.</p>
       </div>

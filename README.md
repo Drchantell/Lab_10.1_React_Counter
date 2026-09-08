@@ -1,13 +1,35 @@
 Lab_10.1_React_Counter
 
-This is my Lab 10.1 React Counter project. It is a simple React and TypeScript app that helped me practice using useState and useEffect. The counter starts at 0, and the user can increase the count, decrease the count, reset it, and choose a custom step value.
+This is my Lab 10.1 React Counter project built with React and TypeScript to practice managing state with `useState` and handling side effects with `useEffect`.
 
-The app also keeps a history of the count and saves the current count in localStorage. I used useState to store the count, step value, history, and save message. I used useEffect to save the count when it changes and to make the up and down arrow keys work. I also used cleanup functions to clear the timer and remove the keyboard listener when they are no longer needed.
+## How the Code Works
 
-The app includes an increment button, a decrement button, a reset button, history tracking, automatic saving, keyboard controls, and a custom step value. The up arrow increases the count and the down arrow decreases it. The reset button changes the count back to 0 and clears the old history.
+### 1. State Management (`useState`)
+- **`count`**: Tracks the current counter value (starts at `0`).
+- **`step`**: Tracks the step amount for increments and decrements (starts at `1`).
+- **`history`**: Keeps an array of all previous count values (starts as `[0]`).
 
-To run the project, I open the Lab_10.1_React_Counter folder in VS Code, open the terminal, run npm install, and then run npm run dev. After that, I open the local link shown in the terminal.
+### 2. Updating State (`changeCount`)
+A helper function `changeCount` updates both `count` and appends the new value to `history` using the spread operator (`[...prev, nextCount]`).
 
-Author: 
-Dr. Chantell McDowell
-Per Scholars Student
+### 3. Auto-Saving with `useEffect`
+Automatically saves the current count to `localStorage` when `count` changes. Uses a 500ms `setTimeout` and a cleanup function (`clearTimeout`) to debounce rapid saves and avoid race conditions.
+
+### 4. Loading Saved State on Mount
+An `useEffect` hook with an empty dependency array (`[]`) runs once on page load to restore the count and history from `localStorage`.
+
+### 5. Keyboard Controls & Cleanup
+An `useEffect` hook attaches a `keydown` listener to `document` for `ArrowUp` and `ArrowDown` controls, with a cleanup function (`document.removeEventListener`) to prevent memory leaks and duplicate listeners.
+
+---
+
+## How to Run the Project
+
+1. Open the project folder in VS Code terminal.
+2. Run `npm install` to install dependencies.
+3. Run `npm run dev` to start the local development server.
+4. Open the local URL shown in the terminal.
+
+---
+
+Author: Dr. Chantell McDowell
